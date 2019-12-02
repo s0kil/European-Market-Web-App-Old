@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  padding: 10px;
+  max-width: 62em;
+  background: #F2F2F2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Merriweather', serif;
+}
+
+/* http://hslpicker.com/ */
+
+.brand-color-red {
+  color: rgba(235, 0, 0, 1);
+  /* color: #eb0000; */
+  /* color: hsla(0, 100%, 46%, 1) */
+}
+
+.brand-color-green {
+  color: rgba(129, 184, 20, 1);
+  /* color: #81b814; */
+  /* color: hsla(80, 80%, 40%, 1); */
+}
+
+.brand-color-green-dark {
+  color: rgba(97, 138, 15, 1);
+  /* color: #618a0f; */
+  /* color: hsla(80, 80%, 30%, 1); */
+}
+
+.brand-color-green-darkest {
+  color: rgba(65, 92, 10, 1);
+  /* color: #415c0a; */
+  /* color: hsla(80, 80%, 20%, 1); */
+}
+
+.brand-color-beige {
+  /* color: rgba(250, 236, 209, 1); */
+  color: #F2F2F2;
+  /* color: #faecd1; */
+  /* color: hsla(40, 80%, 90%, 1); */
+}
+
+.brand-color-black {
+  color: rgba(26, 26, 26, 1);
+  /* color: #1a1a1a; */
+  /* color: hsla(0, 0%, 10%, 1); */
+}
+
+.perf-box-shadow {
+  /* https://medium.com/airbnb-engineering/css-box-shadow-can-slow-down-scrolling-d8ea47ec6867 */
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.15);
+}

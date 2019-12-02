@@ -1,0 +1,75 @@
+<svelte:window on:resize="debounceResizeUpdate()" />
+
+<Header />
+<Nav segment={child.segment} />
+
+<main>
+	<svelte:component height={height} brandColors={brandColors} apiUrl={apiUrl} width={width} brandName={brandName} this={child.component}
+	 {...child.props} />
+</main>
+
+
+<script>
+	export default {
+	  data() {
+	    return {
+	      brandName: "European Market",
+	      brandColors: {
+	        red: "rgba(235, 0, 0, 1)",
+	        beige: "rgba(250, 236, 209, 1)",
+	        black: "rgba(26, 26, 26, 1)",
+	        white: "rgba(255, 255, 255, 1)",
+	        green: "rgba(129, 184, 20, 1)",
+	        greenDark: "rgba(97, 138, 15, 1)",
+	        greenDarkest: "rgba(65, 92, 10, 1)"
+	      },
+	      width: 0,
+	      height: 0,
+	      // Server API URL
+	      apiUrl: "//www.europeanmarket.xyz/api"
+	    };
+	  },
+
+	  oncreate() {
+	    // DEV API URl
+	    if (location.port === "8000") {
+	      this.set({ apiUrl: "//" + location.hostname + ":9000" });
+	    }
+
+	    // Call Once For Initial Load
+	    this.resizeUpdate();
+	  },
+
+	  methods: {
+	    width() {
+	      return document.body.clientWidth;
+	    },
+
+	    height() {
+	      return document.body.clientHeight;
+	    },
+
+	    resizeUpdate() {
+	      this.set({ width: this.width() });
+	      this.set({ height: this.height() });
+	    },
+
+	    // Debounce (Delay) Resize Event Listener
+	    debounceResizeUpdate() {
+	      const update = () => this.resizeUpdate();
+
+	      let resizeTimer;
+	      clearTimeout(resizeTimer);
+	      resizeTimer = setTimeout(() => {
+	        // Resizing has "stopped"
+	        update();
+	      }, 100);
+	    }
+	  },
+
+	  components: {
+	    Header: "../components/Header.svelte",
+	    Nav: "../components/Nav.svelte"
+	  }
+	};
+</script>

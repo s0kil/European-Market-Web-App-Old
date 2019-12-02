@@ -1,0 +1,73 @@
+<svelte:head>
+	<title>Locations | {brandName}</title>
+</svelte:head>
+
+<div id="locations">
+	<h1 class="brand-color-black">Our Locations</h1>
+	{#each locations as location}
+	<div class="location perf-box-shadow">
+		<h2 style="color: {brandColors.greenDarkest}">{location.location}</h2>
+		<a href={ '/locations/' + location.pageURL}>
+			<button style="background: {brandColors.green}; color: {brandColors.white}">More Info</button>
+		</a>
+	</div>
+	{/each}
+</div>
+
+
+<style>
+  #locations {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 800px) {
+    #locations {
+      max-width: none;
+      margin: 0 auto;
+    }
+  }
+
+  .location {
+    background: #e6e6e6;
+    margin-bottom: 1em;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  h2 {
+    margin-left: 1em;
+    font-size: 3vh;
+  }
+
+  a {
+    display: flex;
+    align-self: center;
+    text-decoration: none;
+  }
+
+  #locations button {
+    border: 0;
+    padding: 0.6em 1em;
+    margin-right: 1em;
+    white-space: nowrap;
+  }
+
+  #locations button:hover {
+    background: rgb(71, 102, 0);
+    cursor: pointer;
+  }
+</style>
+
+
+<script>
+  export default {
+    preload({}) {
+      return this.fetch("locations.json")
+        .then(r => r.json())
+        .then(locations => {
+          return { locations };
+        });
+    }
+  };
+</script>

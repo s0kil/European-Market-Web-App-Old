@@ -1,0 +1,55 @@
+<svelte:head>
+	<title>Home | {brandName}</title>
+</svelte:head>
+
+<!-- <Specials /> -->
+
+
+<div id="imageSlider">
+	<!-- Tell Svelte to Only Load Images once width is Available -->
+	{#if width}
+		<ImageSlider bind:width=width />
+	{/if}
+</div>
+
+<div id="contentBox">
+	<ContentBox text="Find A Location Near You" linkText="Our Locations" link="locations" />
+	<ContentBox text="Read How We Started" linkText="Our Story" link="our-story" />
+	<!-- <ContentBox text="Our Delicious Products" linkText="Our Products" link="products" /> -->
+</div>
+
+<div id="subscriptionForm">
+	<!-- <SubscriptionForm /> -->
+</div>
+<div id="socialButtons">
+	<SocialButtons />
+</div>
+
+
+<style>
+	#contentBox {
+		display: flex;
+		justify-content: space-between;
+		margin: 2em 0;
+		flex-wrap: wrap;
+	}
+
+	@media (max-width: 820px) {
+		#contentBox {
+			justify-content: space-around;
+		}
+	}
+</style>
+
+
+<script>
+	export default {
+		components: {
+			// Specials: '../components/Specials/Specials',
+			ImageSlider: '../components/ImageSlider.svelte',
+			ContentBox: '../components/ContentBox.svelte',
+			// SubscriptionForm: '../components/SubscriptionForm.svelte',
+			SocialButtons: '../components/SocialButtons.svelte'
+		}
+	};
+</script>

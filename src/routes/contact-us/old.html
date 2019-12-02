@@ -1,0 +1,180 @@
+<svelte:head>
+  <title>Contact Us | European Market</title>
+  <!-- Faster Form Submissions -->
+  <link href="{apiUrl + '/contact'}" rel="preconnect" crossorigin>
+</svelte:head>
+
+<section class="Grid">
+  <div class="Cell {width <= 700 ? '-12of12' : '-8of12'}">
+    <img src="images/fresh-vegetables-min.jpg" alt="Fresh Vegetables">
+  </div>
+  <div class="Cell {width <= 700 ? '-12of12' : '-4of12'}">
+    <div id="contactInfo" itemscope itemtype="https://schema.org/LocalBusiness">
+      <p itemprop="telephone">Phone: <a href="tel:864-590-6760">864-590-6760</a></p>
+      <p itemprop="email">Email: <a href="mailto:europeanmarketus@gmail.com">europeanmarketus@gmail.com</a></p>
+    </div>
+    {#if formStatus >= 0}
+    <div class="flash {formStatus == 1 ? 'flash-success' : 'flash-failed'}">
+      <p>{formStatusMessage}</p>
+    </div>
+    {/if}
+    <form on:submit="sendForm(event)" id="contactUs">
+      <input bind:value="customerName" type="text" id="customerName" autocomplete="name" placeholder="Name" required>
+      <input bind:value="customerEmail" type="email" id="customerEmail" autocomplete="email" placeholder="Email" required>
+      <input bind:value="customerPhone" type="tel" id="customerPhone" autocomplete="tel" placeholder="Phone (Optional)">
+      <textarea bind:value="customerMessage" id="customerMessage" placeholder="Message" required></textarea>
+      <div class="Grid -right">
+        <button type="submit">Send</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<style>
+  section {
+    margin-bottom: 4em;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  a {
+    color: #517a3e;
+  }
+
+  #contactUs,
+  #contactInfo,
+  .flash {
+    margin-left: 2em;
+  }
+
+  @media (max-width: 700px) {
+
+    #contactUs,
+    #contactInfo,
+    .flash {
+      margin-left: 0em;
+    }
+  }
+
+  #contactInfo {
+    margin-bottom: 4em;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+
+  input,
+  textarea {
+    margin-bottom: 0.5em;
+    width: 100%;
+    padding: 0.4em;
+    font-size: 1em;
+    border: 1px solid #517a3e;
+    background: transparent;
+    color: #000000;
+    transition: all 300ms ease;
+  }
+
+  button {
+    background-color: rgba(229, 9, 9, 1);
+    border: none;
+    font-size: 1.2em;
+    padding: 0.4em;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .flash {
+    color: #ffffff;
+    margin-bottom: 1em;
+  }
+
+  .flash p {
+    margin: 0;
+    padding: 0.4em;
+    font-size: 1.4em;
+  }
+
+  .flash-success {
+    background: #517a3e;
+  }
+
+  .flash-failed {
+    background: #e90000;
+  }
+</style>
+
+<script>
+  export default {
+    data() {
+      return {
+        // Status: -1 = Default, 0: Failed, 1: Success
+        formStatus: -1,
+        formStatusMessage: "",
+
+        customerName: "",
+        customerEmail: "",
+        customerPhone: "",
+        customerMessage: ""
+      };
+    },
+
+    methods: {
+      resetForm(formButton) {
+        setTimeout(() => {
+          // Reset Form Status to Default
+          this.set({ formStatus: -1 });
+          formButton.disabled = false;
+        }, 2000);
+      },
+      sendForm(event) {
+        event.preventDefault();
+
+        const formButton = document
+          .getElementById("contactUs")
+          .getElementsByTagName("button")[0];
+        // Prevent Multiple Clicks.
+        formButton.disabled = true;
+        const {
+          customerName,
+          customerEmail,
+          customerPhone,
+          customerMessage
+        } = this.get();
+
+        let formData = JSON.stringify({
+          customerName: customerName,
+          customerEmail: customerEmail,
+          customerPhone: customerPhone,
+          customerMessage: customerMessage
+        });
+
+        fetch(this.get().apiUrl + "/contact", {
+          method: "POST",
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status >= 0) {
+              this.set({ formStatusMessage: data.message });
+              this.set({ formStatus: 1 });
+
+              document.forms.namedItem("contactUs").reset();
+              this.resetForm(formButton);
+            }
+          })
+          .catch(error => {
+            this.set({
+              formStatusMessage: "Failed to send, please try again shortly"
+            });
+            this.set({ formStatus: 0 });
+            this.resetForm(formButton);
+          });
+      }
+    }
+  };
+</script>

@@ -1,0 +1,82 @@
+<svelte:head>
+	<title>Contact Us | {brandName}</title>
+</svelte:head>
+
+<section class="Grid">
+	<div class="Cell {width <= 700 ? '-12of12' : '-8of12'}">
+		<img src="images/fresh-vegetables-min.jpg" alt="Fresh Vegetables">
+	</div>
+
+	<div class="Cell {width <= 700 ? '-12of12' : '-4of12'}">
+    <div id="contactInfo" itemscope itemtype="https://schema.org/LocalBusiness">
+			<p itemprop="telephone">Phone: <a href="tel:864-590-6760">864-590-6760</a></p>
+			<p itemprop="email">Email: <a href="mailto:europeanmarketus@gmail.com">europeanmarketus@gmail.com</a></p>
+		</div>
+
+		<form id="contactUs" name="Contact" method="POST" action="https://formspree.io/europeanmarketus@gmail.com">
+			<input id="customerName" name="Name" type="text" autocomplete="name" placeholder="Name" required>
+			<input id="customerEmail" name="Email" type="email" autocomplete="email" placeholder="Email" required>
+			<input id="customerPhone" name="Tel" type="tel" autocomplete="tel" placeholder="Phone (Optional)">
+			<textarea id="customerMessage" name="Message" placeholder="Message" required></textarea>
+			<div class="Grid -right">
+				<button type="submit">Send</button>
+			</div>
+		</form>
+
+	</div>
+</section>
+
+<style>
+  section {
+    margin-bottom: 4em;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  a {
+    color: #517a3e;
+  }
+
+  #contactUs,
+  #contactInfo {
+    margin-left: 2em;
+  }
+
+  @media (max-width: 700px) {
+    #contactUs,
+    #contactInfo {
+      margin-left: 0em;
+    }
+  }
+
+  #contactInfo {
+    margin-bottom: 4em;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+
+  input,
+  textarea {
+    margin-bottom: 0.5em;
+    width: 100%;
+    padding: 0.4em;
+    font-size: 1em;
+    border: 1px solid #517a3e;
+    background: transparent;
+    color: #000000;
+    transition: all 300ms ease;
+  }
+
+  button {
+    background-color: rgba(229, 9, 9, 1);
+    border: none;
+    font-size: 1.2em;
+    padding: 0.4em;
+    color: #ffffff;
+    cursor: pointer;
+  }
+</style>

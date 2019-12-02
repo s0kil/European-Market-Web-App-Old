@@ -1,0 +1,89 @@
+<section class="Grid">
+	<!-- <h1 class="Cell -12of12 brand-color-green-darkest">Weekly Combo Specials</h1> -->
+
+	<div class="special Grid perf-box-shadow">
+		<div class="Cell -12of12">
+			<h2 class="brand-color-green-darkest">Delicious, Fresh & Healthy Combo For You!</h2>
+		</div>
+		<div class="Cell {width <= 700 ? '-12of12' : '-' + 12 / 3 + 'of12'}">
+			<img src="images/weekly-specials/feb-week-1/pickles-resized.jpg" alt="">
+			<h4 class="brand-color-black">Krakus Pickles</h4>
+			<p class="brand-color-black">Polish Dill Pickles are lightly crunchy, with a mild, pleasantly sweet and sour flavor. They
+				are marinated in a light vinegar brine with dill, bay leaf, garlic, and mustard seed.</p>
+		</div>
+		<div class="Cell {width <= 700 ? '-12of12' : '-' + 12 / 3 + 'of12'}">
+			<img src="images/weekly-specials/feb-week-1/bread-resized.jpg" alt="">
+			<h4 class="brand-color-black">Ciabatta Bread</h4>
+			<p class="brand-color-black">Ciabatta is a classic Italian style of bread, made from a lean yeast dough meaning that there
+				is not fat present in the dough. This creates a very chewy bread with a slightly crispy crust.</p>
+		</div>
+		<div class="Cell {width <= 700 ? '-12of12' : '-' + 12 / 3 + 'of12'}">
+			<img src="images/weekly-specials/feb-week-1/bologna-resized.jpg" alt="">
+			<h4 class="brand-color-black">Slivochnaya Bologna</h4>
+			<p class="brand-color-black">Slivochnaya Bologna, is delicate and creamy leaving you an impressive and lasting experience
+				at the first bite.</p>
+		</div>
+
+		<div class="deal Grid -middle">
+			<div class="Cell {width <= 700 ? '-12of12' : '-6of12'}">
+				<h3 class="after brand-color-green-dark">Our Deal: <span class="brand-color-red">$10</span></h3>
+			</div>
+			<div class="Cell {width <= 700 ? '-12of12' : '-6of12'}">
+				<h3 class="before brand-color-green-darkest">Original Price: <s class="brand-color-black">$13</s></h3>
+			</div>
+			<div class="Cell -12of12">
+				<h3 class="off brand-color-green-dark"><span class="brand-color-red">28%</span> Off This Week Only!</h3>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+  section {
+    max-width: 80%;
+    margin: 1em auto;
+  }
+
+  .special {
+    background: white;
+    text-align: center;
+    padding: 0 1em;
+  }
+
+  img {
+    height: 400px;
+  }
+
+  h2,
+  h3,
+  h4,
+  p {
+    text-align: initial;
+  }
+
+  p {
+    margin-right: 2em;
+  }
+
+  .deal .after {
+    font-size: 2em;
+  }
+
+  .deal .before {
+    font-size: 1.2em;
+  }
+
+  .deal .off {
+    font-size: 1.4em;
+  }
+
+  @media (max-width: 700px) {
+    section {
+      max-width: 100%;
+    }
+
+    .deal h3 {
+      margin: 0.6em 0;
+    }
+  }
+</style>

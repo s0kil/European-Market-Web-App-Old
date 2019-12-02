@@ -1,0 +1,81 @@
+<div class="Grid -middle">
+	<h1 class="Cell {width <= 700 ? '-12of12' : '-9of12'}">Gallery</h1>
+	<button id="shareAction" class="Cell {width <= 700 ? '-12of12' : '-3of12'}" type="button">
+		<a href="gallery/share">Share Your Experience!</a>
+	</button>
+
+	<div id="gallery" class="Grid gallery">
+		{#each userImages as item}
+		    <img class="galleryImage Cell {width <= 700 ? '-12of12' : '-4of12'}" src="{item.imageSource}" alt="">
+        {/each}
+	</div>
+</div>
+
+
+<style>
+    #shareAction {
+      border: none;
+      background: #517a3e;
+      padding: 0.6em;
+      font-size: 1.2em;
+    }
+
+    #shareAction a {
+      text-decoration: none;
+      color: rgb(255, 255, 255);
+    }
+
+    :global(.galleryImage) {
+      width: 100%;
+      height: 300px;
+      padding: 0.2em;
+      object-fit: cover;
+    }
+</style>
+
+
+<script>
+    import { push } from "svelte-extras";
+
+    export default {
+      data() {
+        return {
+          userImages: []
+        };
+      },
+
+      oncreate() {
+        let galleryApi = this.get().apiUrl + "/gallery";
+        this.loadGallery(galleryApi);
+      },
+
+      methods: {
+        push,
+
+        loadGallery(galleryApi) {
+          fetch(galleryApi)
+            .then(r => r.json())
+            .then(json => {
+              this.renderGallery(json);
+            });
+        },
+
+        renderGallery(data) {
+          let gallery = document.getElementById("gallery");
+          let fragment = document.createDocumentFragment();
+          let staticPath = this.get().apiUrl + "/static/";
+
+          for (let key in data) {
+            let item = data[key];
+            for (let key in item) {
+              let fullName = item[key].fullname;
+              let imageName = item[key].image;
+              let imageSource = staticPath + imageName;
+
+              this.push("userImages", { fullName, imageSource });
+            }
+          }
+        }
+      }
+    };
+</script>

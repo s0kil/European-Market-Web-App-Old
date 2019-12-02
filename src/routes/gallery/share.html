@@ -1,0 +1,221 @@
+<svelte:head>
+	<title>Gallery | European Market</title>
+</svelte:head>
+
+<div id="share">
+	<div class="Grid">
+	{#if uploadStatus == 1}
+		<div class="flash flash-success Cell -fill">
+			<p>Successfully uploaded, Thank you for sharing</p>
+		</div>
+	{:elseif uploadStatus == 0}
+		<div class="flash flash-failed Cell -fill">
+			<p>Failed to upload, please try again shortly</p>
+		</div>
+	{/if}
+	</div>
+	
+	<form id="shareForm" class="Grid -between">
+		
+		<div class="form-group Cell {width <= 700 ? '-12of12' : '-5of12'}">
+			<label class="form-label" for="customerName">Full Name</label>
+			<input bind:value="customerName" class="form-input" id="customerName" type="text" placeholder="Your Full Name" required autocomplete="name">
+		</div>
+		
+		<div class="form-group Cell {width <= 700 ? '-12of12' : '-5of12'}">
+			<label class="form-label" for="customerEmail">Email Address</label>
+			<input bind:value="customerEmail" class="form-input" id="customerEmail" type="email" placeholder="Your Email" required autocomplete="email">
+		</div>
+		
+		<div class="form-group Cell -12of12 file-input">
+			<label class="form-label" for="customerImages">Choose Your Photos</label>
+			<input on:change="fileView()" id="customerImages" type="file" multiple accept="image/*">
+		</div>
+		
+		<div class="Grid" id="fileView"></div>
+	</form>
+	
+	{#if customerName && customerEmail && customerFiles}
+		<div class="Grid -right">
+			<button class="button-submit" on:click="uploadCustomerImages()"><span>Share Now</span></button>
+		</div>
+	{/if}
+</div>
+
+
+<style>
+	.form-group {
+		padding: 1em 0;
+	}
+
+	.form-label {
+		display: block;
+		font-size: 18px;
+	}
+
+	.form-input {
+		border: 1px solid #517a3e;
+		background: #faefd0;
+		padding: 0.6em;
+		width: 100%;
+	}
+
+	.file-input input {
+		display: none;
+	}
+
+	.file-input label {
+		text-align: center;
+		padding: 10px;
+		background: #517a3e;
+		display: block;
+		width: 200px;
+		cursor: pointer;
+		color: #ffffff;
+		font-size: 18px;
+	}
+
+	.button-submit {
+		cursor: pointer;
+		font-size: 1.2em;
+		border-radius: 2px;
+		background-color: rgb(233, 0, 0);
+		border: none;
+		padding: 10px 0px;
+		width: 150px;
+		transition: all 0.5s;
+		color: #ffffff;
+	}
+
+	.button-submit span {
+		cursor: pointer;
+		display: inline-block;
+		position: relative;
+		transition: 0.5s;
+	}
+
+	.button-submit span:after {
+		content: '»';
+		position: absolute;
+		opacity: 0;
+		top: 0;
+		right: -20px;
+		transition: 0.5s;
+	}
+
+	.button-submit:hover span {
+		padding-right: 25px;
+	}
+
+	.button-submit:hover span:after {
+		opacity: 1;
+		right: 0;
+	}
+
+	:global(.fileViewImage) {
+		padding: 0 0.4em 0.2em 0;
+	}
+
+	.flash {
+		color: #ffffff;
+	}
+
+	.flash p {
+		margin: 0;
+		padding: 0.4em 0.2em;
+		font-size: 1.6em;
+	}
+
+	.flash-success {
+		background: #517a3e;
+	}
+	.flash-failed {
+		background: #E90000;
+	}
+</style>
+
+
+<script>
+	export default {
+		data() {
+			return {
+				uploadStatus: undefined,
+
+				// FORM DATA
+				customerName: "",
+				customerEmail: "",
+				customerFiles: false
+			};
+		},
+
+		methods: {
+			fileView() {
+				let customerImages = document.getElementById("customerImages");
+				let fileView = document.getElementById("fileView");
+				// `createDocumentFragment()` does not work as expected, so using a div element instead.
+				let fileViewFragment = document.createElement("div");
+
+				for (let file of customerImages.files) {
+					let reader = new FileReader();
+					reader.onload = (event) => {
+						let img = document.createElement("img");
+						img.src = event.target.result;
+						// Calculate Responsive Classes Based On Device Width;
+						let cellClass = this.get().width <= 700 ? '-12of12' : '-4of12';
+						img.classList.add("Cell", cellClass, "fileViewImage");
+						fileViewFragment.appendChild(img);
+					}
+					reader.readAsDataURL(file);
+				}
+
+				// Clear Element, If User Selected New Files
+				this.clearfileView();
+				fileView.appendChild(fileViewFragment);
+				this.set({customerFiles: true});
+			},
+
+			clearfileView() {
+				document.getElementById("fileView").innerHTML = "";
+			},
+
+			uploadCustomerImages() {
+				event.preventDefault();
+
+				let customerName = this.get().customerName;
+				let customerEmail = this.get().customerEmail;
+				let customerImages = document.getElementById("customerImages");
+				let uploadApiUrl = this.get().apiUrl + "/gallery/upload";
+
+				for (let file of customerImages.files) {
+					let formData = new FormData();
+					formData.append("customerName", customerName);
+					formData.append("customerEmail", customerEmail);
+					formData.append("customerImage", file);
+					fetch(uploadApiUrl, {
+						method: "POST",
+						body: formData
+					})
+						.then(response => response.json())
+						.then(data => {
+							if (data.status == 1) {
+								// Success
+								this.set({ uploadStatus: 1 });
+							} else {
+								// Failed
+								this.set({ uploadStatus: 0 });
+							}
+						})
+						.catch(error => {
+							throw error;
+						});
+				}
+
+				setTimeout(() => {
+					this.set({ uploadStatus: -1 });
+					document.getElementById("shareForm").reset();
+					this.clearfileView();
+				}, 2000);
+			}
+		}
+	};
+</script>
