@@ -27,7 +27,7 @@ const locations = [
     emailAddress: Default.emailAddress,
     phoneNumber: Default.phoneNumber,
     status: Status.open,
-    hoursOfOperation: "Mon - Sat 10am - 6:30pm",
+    hoursOfOperation: "Mon - Sat 10:30am - 7pm, Sun 12:30pm - 2pm",
     pageURL: "anderson-sc",
     coordinates: {
       latitude: "34.515392",
